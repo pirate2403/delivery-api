@@ -6,7 +6,6 @@ import { IErrorService } from "../../services/error/error-service.interfaces";
 import ErrorService from "../../services/error/error.service";
 import { ERROR_TYPES } from "../../services/error/error.contsants";
 import { ERROR_MESSAGES } from "./user.constants";
-import UserDto from "./user.dto";
 
 @singleton()
 class UserModel implements IUserModel {
@@ -18,9 +17,13 @@ class UserModel implements IUserModel {
     @inject(ErrorService.token) private _errorService: IErrorService,
   ) {}
 
-  async create(payload: IUserCreatePayload): Promise<UserDto> {
+  async create(payload: IUserCreatePayload): Promise<IUser> {
     const created = await this._model.create(payload);
-    return new UserDto(created._id, created.login);
+    return {
+      id: created.id,
+      login: created.login,
+      password: created.password,
+    };
   }
 
   async checkExistence(login: string): Promise<boolean> {

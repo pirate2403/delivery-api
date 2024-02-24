@@ -1,6 +1,6 @@
 import { IUserCreatePayload } from "../../../models/user/user.interfaces";
-import UserDto from "../../../models/user/user.dto";
+import { IRegistrationData } from "../interfaces/auth.interfaces";
 
 export interface IAuthService {
-  registration(payload: IUserCreatePayload): Promise<UserDto>;
+  registration(payload: IUserCreatePayload): Promise<IRegistrationData>;
 }

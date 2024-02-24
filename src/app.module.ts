@@ -11,6 +11,7 @@ import LoggerService from "./services/logger/logger.service";
 import ErrorService from "./services/error/error.service";
 import AuthModule from "./modules/auth/auth.module";
 import UserModel from "./models/user/user.model";
+import TokenService from "./services/token/token.service";
 
 const appContainer = {
   token: "app",
@@ -27,6 +28,7 @@ const appContainer = {
   LoggerService,
   ErrorService,
   UserModel,
+  TokenService,
 ])
 export default class AppModule {
   constructor(

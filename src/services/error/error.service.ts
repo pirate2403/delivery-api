@@ -9,35 +9,35 @@ class ErrorService implements IErrorService {
   static readonly token = "ErrorService";
 
   throwBadRequest(
-    type: keyof typeof ERROR_TYPES,
+    type: keyof typeof ERROR_TYPES = ERROR_TYPES.badRequest,
     message: string = type,
   ): IError {
     throw new AppError(type, message);
   }
 
   throwForbidden(
-    type: keyof typeof ERROR_TYPES,
+    type: keyof typeof ERROR_TYPES = ERROR_TYPES.forbidden,
     message: string = type,
   ): IError {
     throw new AppError(type, message);
   }
 
   throwNotFound(
-    type: keyof typeof ERROR_TYPES,
+    type: keyof typeof ERROR_TYPES = ERROR_TYPES.notFound,
     message: string = type,
   ): IError {
     throw new AppError(type, message);
   }
 
   throwServerError(
-    type: keyof typeof ERROR_TYPES,
+    type: keyof typeof ERROR_TYPES = ERROR_TYPES.serverError,
     message: string = type,
   ): IError {
     throw new AppError(type, message);
   }
 
   throwUnauthorized(
-    type: keyof typeof ERROR_TYPES,
+    type: keyof typeof ERROR_TYPES = ERROR_TYPES.unauthorized,
     message: string = type,
   ): IError {
     throw new AppError(type, message);

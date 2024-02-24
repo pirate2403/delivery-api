@@ -1,8 +1,7 @@
 import { Types } from "mongoose";
-import UserDto from "./user.dto";
 
 export interface IUserModel {
-  create(payload: IUserCreatePayload): Promise<UserDto>;
+  create(payload: IUserCreatePayload): Promise<IUser>;
 
   checkExistence(login: string): Promise<boolean>;
 }
@@ -13,7 +12,7 @@ export interface IUserCreatePayload {
 }
 
 export interface IUser {
-  _id: Types.ObjectId;
+  id: Types.ObjectId;
   login: string;
   password: string;
 }

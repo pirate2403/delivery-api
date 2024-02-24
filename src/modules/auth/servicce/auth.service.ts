@@ -1,23 +1,39 @@
 import { inject, singleton } from "tsyringe";
+import bcrypt from "bcrypt";
 import { IAuthService } from "./auth-service.interface";
 import {
   IUserCreatePayload,
   IUserModel,
 } from "../../../models/user/user.interfaces";
 import UserModel from "../../../models/user/user.model";
-import UserDto from "../../../models/user/user.dto";
+import { SALT } from "../../../environment";
+import TokenService from "../../../services/token/token.service";
+import { ITokenService } from "../../../services/token/token-service.interface";
+import { IRegistrationData } from "../interfaces/auth.interfaces";
 
 @singleton()
 class AuthService implements IAuthService {
   static readonly token = "AuthService";
 
-  constructor(@inject(UserModel.token) private _userModel: IUserModel) {
+  constructor(
+    @inject(UserModel.token) private _userModel: IUserModel,
+    @inject(TokenService.token) private _tokenService: ITokenService,
+  ) {
     this.registration = this.registration.bind(this);
   }
 
-  async registration(payload: IUserCreatePayload): Promise<UserDto> {
+  async registration(payload: IUserCreatePayload): Promise<IRegistrationData> {
     await this._userModel.checkExistence(payload.login);
-    return this._userModel.create(payload);
+
+    const user = await this._userModel.create({
+      ...payload,
+      password: bcrypt.hashSync(payload.password, SALT),
+    });
+
+    return {
+      accessToken: await this._tokenService.generateAccessToken(user),
+      refreshToken: await this._tokenService.generateRefreshToken(user),
+    };
   }
 }
 

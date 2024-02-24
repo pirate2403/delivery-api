@@ -3,12 +3,11 @@ import mongoose from "mongoose";
 import { IDbService } from "./db-service.interface";
 import { ILoggerService } from "../logger/logger-service.interface";
 import LoggerService from "../logger/logger.service";
+import { MONGO_URI } from "../../environment";
 
 @singleton()
 class DbService implements IDbService {
   static readonly token = "DbService";
-
-  private _uri: string = process.env.MONGO_URI || "";
 
   private _client: typeof mongoose = mongoose;
 
@@ -16,7 +15,7 @@ class DbService implements IDbService {
 
   private async _connectMongo(): Promise<void> {
     return this._client
-      .connect(this._uri)
+      .connect(MONGO_URI)
       .then(() => {
         this.logger.success("Data base connection successful");
       })

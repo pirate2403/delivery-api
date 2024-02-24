@@ -12,7 +12,8 @@ import { IUserCreatePayload } from "../../../models/user/user.interfaces";
 import AuthService from "../servicce/auth.service";
 import LoggerService from "../../../services/logger/logger.service";
 import { ILoggerService } from "../../../services/logger/logger-service.interface";
-import UserDto from "../../../models/user/user.dto";
+import { IRegistrationPayload } from "../interfaces/auth.interfaces";
+import TOKEN_COOKIE_SETTINGS from "../constants/cookie";
 
 @singleton()
 class AuthController implements IController {
@@ -38,13 +39,21 @@ class AuthController implements IController {
   }
 
   private async _registration(
-    req: Request<Params, UserDto, IUserCreatePayload>,
-    res: Response<UserDto>,
+    req: Request<Params, IRegistrationPayload, IUserCreatePayload>,
+    res: Response<IRegistrationPayload>,
     next: NextFunction,
   ): Promise<void> {
     try {
-      const user = await this._authService.registration(req.body);
-      res.status(RESPONSE_STATUS.success).json(user);
+      const { accessToken, refreshToken } =
+        await this._authService.registration(req.body);
+
+      res.cookie(
+        "refreshToken",
+        refreshToken,
+        TOKEN_COOKIE_SETTINGS.refreshToken,
+      );
+
+      res.status(RESPONSE_STATUS.success).json({ accessToken });
     } catch (e) {
       this._loggerService.error(e);
       next(e);
