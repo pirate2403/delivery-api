@@ -12,6 +12,9 @@ import ErrorService from "./services/error/error.service";
 import AuthModule from "./modules/auth/auth.module";
 import UserModel from "./models/user/user.model";
 import TokenService from "./services/token/token.service";
+import TokenValidatorMiddleware from "./middlewares/token-validator.middleware";
+import TokenModel from "./models/token/token.model";
+import CookieService from "./services/cookie/cookie.service";
 
 const appContainer = {
   token: "app",
@@ -25,10 +28,13 @@ const appContainer = {
   DbService,
   AuthModule,
   ErrorInterceptorMiddleware,
+  TokenValidatorMiddleware,
   LoggerService,
   ErrorService,
   UserModel,
+  TokenModel,
   TokenService,
+  CookieService,
 ])
 export default class AppModule {
   constructor(

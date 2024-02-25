@@ -4,7 +4,7 @@ import { IRouterService } from "./router-service.interface";
 import { IRouter } from "../../interfaces/router.interface";
 import AuthRouter from "../../modules/auth/router/auth.router";
 import ErrorInterceptorMiddleware from "../../middlewares/error-interceptor.middleware";
-import { IMiddleware } from "../../interfaces/middleware.interface";
+import { IMiddleware } from "../../interfaces/middleware.interfaces";
 
 @singleton()
 class RouterService implements IRouterService {

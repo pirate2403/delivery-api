@@ -1,7 +1,7 @@
 import { registry, singleton } from "tsyringe";
 import AuthRouter from "./router/auth.router";
 import AuthController from "./controller/auth.controller";
-import AuthService from "./servicce/auth.service";
+import AuthService from "./service/auth.service";
 
 @singleton()
 @registry([AuthController, AuthRouter, AuthService])

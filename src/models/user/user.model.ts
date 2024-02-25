@@ -1,11 +1,10 @@
-import { model } from "mongoose";
+import { model, Types } from "mongoose";
 import { inject, singleton } from "tsyringe";
+import bind from "bind-decorator";
 import { IUser, IUserCreatePayload, IUserModel } from "./user.interfaces";
 import userSchema from "./user.schema";
 import { IErrorService } from "../../services/error/error-service.interfaces";
 import ErrorService from "../../services/error/error.service";
-import { ERROR_TYPES } from "../../services/error/error.contsants";
-import { ERROR_MESSAGES } from "./user.constants";
 
 @singleton()
 class UserModel implements IUserModel {
@@ -17,26 +16,38 @@ class UserModel implements IUserModel {
     @inject(ErrorService.token) private _errorService: IErrorService,
   ) {}
 
-  async create(payload: IUserCreatePayload): Promise<IUser> {
-    const created = await this._model.create(payload);
+  @bind
+  private _parseUserByQuery(query: IUser & { _id: Types.ObjectId }): IUser {
     return {
-      id: created.id,
-      login: created.login,
-      password: created.password,
+      id: query._id,
+      login: query.login,
+      password: query.password,
     };
   }
 
-  async checkExistence(login: string): Promise<boolean> {
-    const existed = await this._model.findOne({ login });
+  @bind
+  parseUserFromExtendedUserData(data: IUser & { [k: string]: unknown }): IUser {
+    return {
+      id: data.id,
+      login: data.login,
+      password: data.password,
+    };
+  }
 
-    if (existed) {
-      this._errorService.throwForbidden(
-        ERROR_TYPES.alreadyExist,
-        ERROR_MESSAGES.alreadyExist,
-      );
-    }
+  @bind
+  async create(payload: IUserCreatePayload): Promise<IUser> {
+    return this._parseUserByQuery(await this._model.create(payload));
+  }
 
-    return true;
+  @bind
+  async remove(login: string): Promise<void> {
+    await this._model.deleteOne({ login });
+  }
+
+  @bind
+  async getUserByLogin(login: string): Promise<IUser | null> {
+    const found = await this._model.findOne({ login });
+    return found ? this._parseUserByQuery(found) : null;
   }
 }
 

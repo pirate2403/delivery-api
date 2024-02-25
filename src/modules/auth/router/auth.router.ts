@@ -19,7 +19,7 @@ class AuthRouter implements IRouter {
 
   private _init(): void {
     this._authController.matchers.forEach((item) => {
-      this._expressRouter[item.method](item.path, item.handler);
+      this._expressRouter[item.method](item.path, item.handlers);
     });
   }
 

@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { IMiddleware } from "../interfaces/middleware.interface";
+import { IErrorMiddleware } from "../interfaces/middleware.interfaces";
 import { IError } from "../interfaces/error.interface";
 
-class ErrorInterceptorMiddleware implements IMiddleware {
+class ErrorInterceptorMiddleware implements IErrorMiddleware {
   static readonly token = "ErrorInterceptorMiddleware";
 
   handle(

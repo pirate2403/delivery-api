@@ -1,6 +1,5 @@
 import { singleton } from "tsyringe";
 import { IErrorService } from "./error-service.interfaces";
-import { IError } from "../../interfaces/error.interface";
 import { ERROR_TYPES } from "./error.contsants";
 import AppError from "./app-error.entity";
 
@@ -11,35 +10,35 @@ class ErrorService implements IErrorService {
   throwBadRequest(
     type: keyof typeof ERROR_TYPES = ERROR_TYPES.badRequest,
     message: string = type,
-  ): IError {
+  ): Error {
     throw new AppError(type, message);
   }
 
   throwForbidden(
     type: keyof typeof ERROR_TYPES = ERROR_TYPES.forbidden,
     message: string = type,
-  ): IError {
+  ): Error {
     throw new AppError(type, message);
   }
 
   throwNotFound(
     type: keyof typeof ERROR_TYPES = ERROR_TYPES.notFound,
     message: string = type,
-  ): IError {
+  ): Error {
     throw new AppError(type, message);
   }
 
   throwServerError(
     type: keyof typeof ERROR_TYPES = ERROR_TYPES.serverError,
     message: string = type,
-  ): IError {
+  ): Error {
     throw new AppError(type, message);
   }
 
   throwUnauthorized(
     type: keyof typeof ERROR_TYPES = ERROR_TYPES.unauthorized,
     message: string = type,
-  ): IError {
+  ): Error {
     throw new AppError(type, message);
   }
 }

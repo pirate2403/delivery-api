@@ -4,7 +4,7 @@ import ROUTER_METHOD from "../constants/router-method.const";
 export interface IControllerMatcher {
   path: string;
   method: keyof typeof ROUTER_METHOD;
-  handler: RequestHandler;
+  handlers: RequestHandler[];
 }
 export interface IController {
   matchers: IControllerMatcher[];
